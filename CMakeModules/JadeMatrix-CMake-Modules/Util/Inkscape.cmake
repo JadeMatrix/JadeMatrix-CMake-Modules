@@ -42,7 +42,10 @@ This module provides utilities for working with Inkscape from CMake.
         Targets on which the export process for this bitmap depends.
     
     ``DEPENDEES <target-name>...``
-        Targets which depend on the export process for this bitmap.
+        Targets which depend on the export process for this bitmap.  This is
+        typically only useful if no ``TARGET`` is specified, as the generated
+        bitmap target name won't be available for passing to
+        ``ADD_DEPENDENCIES()``.
     
     ``CREATE_INSTALL_RULE``
         Create an install rule for the exported bitmap, installing it verbatim
