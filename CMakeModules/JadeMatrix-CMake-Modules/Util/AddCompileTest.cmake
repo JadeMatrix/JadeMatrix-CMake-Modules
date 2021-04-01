@@ -39,7 +39,7 @@ JadeMatrix-CMake-Modules/Util/AddCompileTest
         test
 #]=======================================================================]
 
-CMAKE_MINIMUM_REQUIRED( VERSION 3.5 #[[
+CMAKE_MINIMUM_REQUIRED( VERSION 3.5 FATAL_ERROR #[[
     Requiring 3.12+ (workaround exists):
         ADD_LIBRARY( foo OBJECT ) TARGET_LINK_LIBRARIES( foo ... )
     Requiring 3.5+:

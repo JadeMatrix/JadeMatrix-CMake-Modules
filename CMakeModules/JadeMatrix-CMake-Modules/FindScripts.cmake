@@ -6,7 +6,7 @@ This module adds a directory containing custom CMake Find scripts to the
 ``CMAKE_MODULE_PATH``.
 #]=======================================================================]
 
-CMAKE_MINIMUM_REQUIRED( VERSION 3.3 #[[
+CMAKE_MINIMUM_REQUIRED( VERSION 3.3 FATAL_ERROR #[[
     Requiring 3.3+:
         IF( ... IN_LIST ... )
 ]] )

@@ -52,7 +52,7 @@ This module provides utilities for working with Inkscape from CMake.
         as ``<output-file>``.
 #]=======================================================================]
 
-CMAKE_MINIMUM_REQUIRED( VERSION 3.5 #[[
+CMAKE_MINIMUM_REQUIRED( VERSION 3.5 FATAL_ERROR #[[
     Requiring 3.5+:
         CMAKE_PARSE_ARGUMENTS( ... )
 ]] )

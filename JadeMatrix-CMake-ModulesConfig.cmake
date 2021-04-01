@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED( VERSION 3.3 #[[
+CMAKE_MINIMUM_REQUIRED( VERSION 3.3 FATAL_ERROR #[[
     Requiring 3.3+:
         IF( ... IN_LIST ... )
 ]] )
