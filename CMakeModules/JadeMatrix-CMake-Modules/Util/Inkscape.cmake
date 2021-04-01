@@ -9,13 +9,13 @@ This module provides utilities for working with Inkscape from CMake.
     ADD_INKSCAPE_BITMAP(
         <svg-file>
         <output-file>
-        [EXPORT <export-spec>]
-        [DPI <dpi>]
-        [TARGET <target-name>]
-        [OUTPUT_DIR <output-dir>]
-        [DEPENDS <target-name>...]
-        [DEPENDEES <target-name>...]
-        [CREATE_INSTALL_RULE]
+        [ EXPORT <export-spec> ]
+        [ DPI <dpi> ]
+        [ TARGET <target-name> ]
+        [ OUTPUT_DIR <output-dir> ]
+        [ DEPENDS <target-name>... ]
+        [ DEPENDEES <target-name>... ]
+        [ CREATE_INSTALL_RULE ]
     )
     
     Configure a bitmap image ``<output-file>`` to be generated from an SVG
