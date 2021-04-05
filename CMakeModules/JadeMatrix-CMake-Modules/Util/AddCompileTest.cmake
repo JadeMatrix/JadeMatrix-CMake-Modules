@@ -65,7 +65,7 @@ FUNCTION( ADD_COMPILE_TEST TEST_NAME )
     # has the least semantics; EXCLUDE_FROM_ALL is important in case WILL_FAIL
     # is set on this test
     UNSET( COMPILE_TEST_LIB_TYPE )
-    IF( "${CMAKE_VERSION}" VERSION_GREATER_EQUAL "3.12" )
+    IF( CMAKE_VERSION VERSION_GREATER_EQUAL "3.12" )
         # Allowing OBJECT libraries to link against other things was only added
         # in 3.12; else use the default library type
         SET( COMPILE_TEST_LIB_TYPE OBJECT )
