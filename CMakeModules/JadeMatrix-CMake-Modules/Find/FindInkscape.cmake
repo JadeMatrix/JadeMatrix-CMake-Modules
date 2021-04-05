@@ -26,7 +26,7 @@ IF( NOT TARGET Inkscape )
         )
         IF( INKSCAPE_VERSION_RESULT EQUAL 0 )
             STRING( REGEX MATCH
-                "[0123456789]+\\.[0123456789]+(\\.[0123456789]+)*"
+                "[0-9]+\\.[0-9]+(\\.[0-9]+)*"
                 Inkscape_VERSION
                 "${INKSCAPE_VERSION_RAW}"
             )
