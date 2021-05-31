@@ -22,13 +22,16 @@ compiler's ``<version>`` header.
 
 Searches for, in order:
 
+* ``<simd>`` then ``<experimental/simd>`` in a path manually specified with
+  ``JM_SIMD_INCLUDE_DIR``
 * ``<simd>`` then ``<experimental/simd>`` in the current compiler's standard
   library; this could be an installed copy of
   `VcDevel/std-simd <https://github.com/VcDevel/std-simd>`_
-* ``<simd>`` then ``<experimental/simd>`` in a path manually specified with
-  ``JM_SIMD_INCLUDE_DIR``
 * `Twon/std-experimental-simd <https://github.com/Twon/std-experimental-simd>`_,
   first if added by subproject, then via its CMake package configuration
+
+``JM_SIMD_INCLUDE_DIR`` is searched first to allow the user to override an
+automatically discovered "differently-conforming" implementation if necessary.
 #]=======================================================================]
 
 
@@ -66,15 +69,6 @@ FUNCTION( _JM_FINDSIMD_TRY_COMPILER_SIMD HEADER FEATURE_MACRO FEATURE_VALUE )
                     "${FEATURE_MACRO}=${FEATURE_VALUE}"
             )
         ENDIF()
-    ENDIF()
-ENDFUNCTION()
-
-FUNCTION( _JM_FINDSIMD_COMPILER_WARN_MANUAL HEADER )
-    IF( DEFINED JM_SIMD_INCLUDE_DIR AND NOT simd_FIND_QUIETLY )
-        MESSAGE( WARNING
-            "Manually-specified JM_SIMD_INCLUDE_DIR was ignored because the "
-            "current compiler supports <${HEADER}>"
-        )
     ENDIF()
 ENDFUNCTION()
 
@@ -120,27 +114,6 @@ IF( TARGET simd )
 ENDIF()
 
 
-# Compiler-supported (may be installed version of VcDevel/std-simd) ############
-
-_JM_FINDSIMD_TRY_COMPILER_SIMD( "simd" "__cpp_lib_parallel_simd" "201803" )
-IF( TARGET simd )
-    SET( SIMD_FOUND TRUE )
-    _JM_FINDSIMD_COMPILER_WARN_MANUAL( "simd" )
-    RETURN()
-ENDIF()
-
-_JM_FINDSIMD_TRY_COMPILER_SIMD(
-    "experimental/simd"
-    "__cpp_lib_experimental_parallel_simd"
-    "201803"
-)
-IF( TARGET simd )
-    SET( SIMD_FOUND TRUE )
-    _JM_FINDSIMD_COMPILER_WARN_MANUAL( "experimental/simd" )
-    RETURN()
-ENDIF()
-
-
 # Manually specified location ##################################################
 
 IF( DEFINED JM_SIMD_INCLUDE_DIR )
@@ -174,6 +147,25 @@ IF( DEFINED JM_SIMD_INCLUDE_DIR )
             "<simd> or <experimental/simd>; checking elsewhere"
         )
     ENDIF()
+ENDIF()
+
+
+# Compiler-supported (may be installed version of VcDevel/std-simd) ############
+
+_JM_FINDSIMD_TRY_COMPILER_SIMD( "simd" "__cpp_lib_parallel_simd" "201803" )
+IF( TARGET simd )
+    SET( SIMD_FOUND TRUE )
+    RETURN()
+ENDIF()
+
+_JM_FINDSIMD_TRY_COMPILER_SIMD(
+    "experimental/simd"
+    "__cpp_lib_experimental_parallel_simd"
+    "201803"
+)
+IF( TARGET simd )
+    SET( SIMD_FOUND TRUE )
+    RETURN()
 ENDIF()
 
 

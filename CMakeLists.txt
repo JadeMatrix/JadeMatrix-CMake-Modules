@@ -5,7 +5,7 @@ CMAKE_MINIMUM_REQUIRED( VERSION 3.11 FATAL_ERROR #[[
 
 PROJECT(
     "JadeMatrix's CMake Modules"
-    VERSION 1.1
+    VERSION 1.2
     LANGUAGES NONE
 )
 
