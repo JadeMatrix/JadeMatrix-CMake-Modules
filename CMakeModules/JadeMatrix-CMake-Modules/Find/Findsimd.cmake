@@ -78,7 +78,6 @@ FUNCTION( _JM_FINDSIMD_TRY_MANUAL_SIMD
     FEATURE_MACRO
     FEATURE_VALUE
 )
-    message("checking for ${ABS_DIR}/${HEADER}")
     IF(
         EXISTS "${ABS_DIR}/${HEADER}"
         AND NOT IS_DIRECTORY "${ABS_DIR}/${HEADER}"
@@ -88,8 +87,6 @@ FUNCTION( _JM_FINDSIMD_TRY_MANUAL_SIMD
             INTERFACE_INCLUDE_DIRECTORIES "${ABS_DIR}"
             INTERFACE_COMPILE_DEFINITIONS "${FEATURE_MACRO}=${FEATURE_VALUE}"
         )
-    else()
-        message("does not exist or is directory: ${ABS_DIR}/${HEADER}")
     ENDIF()
 ENDFUNCTION()
 
