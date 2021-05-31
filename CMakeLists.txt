@@ -10,7 +10,6 @@ PROJECT(
 )
 
 INCLUDE( GNUInstallDirs )
-INCLUDE( CMakePackageConfigHelpers )
 
 INSTALL(
     FILES "JadeMatrix-CMake-ModulesConfig.cmake"
@@ -21,9 +20,10 @@ INSTALL(
     DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/JadeMatrix-CMake-Modules/"
 )
 
-WRITE_BASIC_PACKAGE_VERSION_FILE(
+CONFIGURE_FILE(
+    "${PROJECT_SOURCE_DIR}/JadeMatrix-CMake-ModulesConfigVersion.cmake.in"
     "${PROJECT_BINARY_DIR}/JadeMatrix-CMake-ModulesConfigVersion.cmake"
-    COMPATIBILITY AnyNewerVersion
+    @ONLY
 )
 INSTALL(
     FILES "${PROJECT_BINARY_DIR}/JadeMatrix-CMake-ModulesConfigVersion.cmake"
