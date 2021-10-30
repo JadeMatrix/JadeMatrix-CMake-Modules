@@ -67,7 +67,11 @@ JadeMatrix-CMake-Modules/Util/AddDependency
     bootstrapping this package in a similar fashion to ``ADD_DEPENDENCY()`` is
     relatively simple::
     
-        LIST( APPEND CMAKE_MODULE_PATH "subdir/with/JMCMM/expected/" )
+        LIST( APPEND CMAKE_MODULE_PATH
+            "${PROJECT_SOURCE_DIR}/${JMCMM_LOCATION}/CMakeModules/"
+            # ... where `JMCMM_LOCATION` is the subdirectory potentially
+            # containing `JadeMatrix-CMake-Modules`
+        )
         INCLUDE( JadeMatrix-CMake-Modules/Util/AddDependency
             OPTIONAL
             RESULT_VARIABLE JMCMM_INCLUDED
