@@ -44,8 +44,9 @@ JadeMatrix-CMake-Modules/Util/AddDependency
         
         ``NAMESPACE <namespace>``
             The namespace prepended onto the specified component targets from
-            the dependency project (e.g. "Dependency::target").  If not given,
-            the namespace is assumed to be the dependency name.
+            the dependency project (e.g. "Dependency::" in the name
+            "Dependency::target").  If not given, the namespace is assumed to be
+            the dependency name with "::" appended.
         
         ``COMPONENTS <component>...``
             List of required component targets from the dependency project
@@ -98,14 +99,14 @@ FUNCTION( ADD_DEPENDENCY NAME )
     IF( DEFINED ADD_DEPENDENCY_NAMESPACE )
         SET( NAMESPACE "${ADD_DEPENDENCY_NAMESPACE}" )
     ELSE()
-        SET( NAMESPACE "${NAME}" )
+        SET( NAMESPACE "${NAME}::" )
     ENDIF()
     
     SET( EXISTING_NONOPTIONAL_COMPONENTS )
     FOREACH( COMPONENT IN LISTS ADD_DEPENDENCY_COMPONENTS )
-        IF( TARGET "${NAMESPACE}::${COMPONENT}" )
+        IF( TARGET "${NAMESPACE}${COMPONENT}" )
             LIST( APPEND EXISTING_NONOPTIONAL_COMPONENTS
-                "${NAMESPACE}::${COMPONENT}"
+                "${NAMESPACE}${COMPONENT}"
             )
         ENDIF()
     ENDFOREACH()
@@ -128,7 +129,7 @@ FUNCTION( ADD_DEPENDENCY NAME )
     
     IF( ENC_EXPECTED_LEN EQUAL 0 )
         FOREACH( COMPONENT IN LISTS ADD_DEPENDENCY_OPTIONAL_COMPONENTS )
-            IF( TARGET "${NAMESPACE}::${COMPONENT}" )
+            IF( TARGET "${NAMESPACE}${COMPONENT}" )
                 IF( NOT DEFINED "${NAME}_FOUND" )
                     SET( "${NAME}_FOUND" TRUE )
                 ENDIF()
@@ -153,7 +154,7 @@ FUNCTION( ADD_DEPENDENCY NAME )
         SET( "${NAME}_FOUND" TRUE )
         FOREACH( COMPONENT IN LISTS ADD_DEPENDENCY_COMPONENTS )
             IF( TARGET "${COMPONENT}" )
-                ADD_LIBRARY( "${NAMESPACE}::${COMPONENT}" ALIAS "${COMPONENT}" )
+                ADD_LIBRARY( "${NAMESPACE}${COMPONENT}" ALIAS "${COMPONENT}" )
             ELSEIF()
                 MESSAGE( ${FAILURE_MESSAGE_LEVEL}
                     "Project ${NAME} under ${ADD_DEPENDENCY_SUBDIRECTORY} has "
@@ -165,7 +166,7 @@ FUNCTION( ADD_DEPENDENCY NAME )
         
         FOREACH( COMPONENT IN LISTS ADD_DEPENDENCY_OPTIONAL_COMPONENTS )
             IF( TARGET "${COMPONENT}" )
-                ADD_LIBRARY( "${NAMESPACE}::${COMPONENT}" ALIAS "${COMPONENT}" )
+                ADD_LIBRARY( "${NAMESPACE}${COMPONENT}" ALIAS "${COMPONENT}" )
             ENDIF()
         ENDFOREACH()
     
