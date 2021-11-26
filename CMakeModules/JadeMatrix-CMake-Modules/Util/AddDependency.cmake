@@ -12,6 +12,7 @@ JadeMatrix-CMake-Modules/Util/AddDependency
         [ NAMESPACE <namespace> ]
         [ COMPONENTS <component>... ]
         [ OPTIONAL_COMPONENTS <component>... ]
+        [ PROPAGATE <variable>... ]
     )
     
     Boilerplate function for defining a dependency as residing in a subdirectory
@@ -53,6 +54,10 @@ JadeMatrix-CMake-Modules/Util/AddDependency
         
         ``OPTIONAL_COMPONENTS <component>...``
             List of optional component targets from the dependency project
+        
+        ``PROPAGATE <variable>...``
+            Variables to set in parent scope after finding the dependency, such
+            as ``CMAKE_MODULE_PATH``
     
     Unlike when using ``FIND_PACKAGE()``, ``COMPONETNS`` and/or
     ``OPTIONAL_COMPONENTS`` must list all target components of the dependency
@@ -92,7 +97,7 @@ FUNCTION( ADD_DEPENDENCY NAME )
     CMAKE_PARSE_ARGUMENTS( "ADD_DEPENDENCY"
         "REQUIRED"
         "VERSION;SUBDIRECTORY;NAMESPACE"
-        "COMPONENTS;OPTIONAL_COMPONENTS"
+        "COMPONENTS;OPTIONAL_COMPONENTS;PROPAGATE"
         ${ARGN}
     )
     
@@ -169,7 +174,7 @@ FUNCTION( ADD_DEPENDENCY NAME )
                 ADD_LIBRARY( "${NAMESPACE}${COMPONENT}" ALIAS "${COMPONENT}" )
             ENDIF()
         ENDFOREACH()
-    
+        
     ELSE()
         # Want to log about this just in case the building user forgot something
         # like `git clone --recursive`
@@ -191,6 +196,10 @@ FUNCTION( ADD_DEPENDENCY NAME )
             COMPONENTS          ${ADD_DEPENDENCY_COMPONENTS}
             OPTIONAL_COMPONENTS ${ADD_DEPENDENCY_OPTIONAL_COMPONENTS}
         )
-    
+        
     ENDIF()
+    
+    FOREACH( VARIABLE IN LISTS ADD_DEPENDENCY_PROPAGATE )
+        SET( "${VARIABLE}" "${${VARIABLE}}" PARENT_SCOPE )
+    ENDFOREACH()
 ENDFUNCTION()
