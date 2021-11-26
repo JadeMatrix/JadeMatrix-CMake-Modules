@@ -185,7 +185,7 @@ FUNCTION( ADD_DEPENDENCY NAME )
             )
         ENDIF()
         
-        IF( ADD_DEPENDENCY_REQUIRED )
+        IF( ADD_DEPENDENCY_REQUIRED AND NOT "${${NAME}_FOUND}" )
             SET( REQUIRED_STRING "REQUIRED" )
         ELSE()
             SET( REQUIRED_STRING )
