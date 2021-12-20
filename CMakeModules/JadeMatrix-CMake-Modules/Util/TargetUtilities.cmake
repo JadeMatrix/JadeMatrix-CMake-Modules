@@ -258,8 +258,14 @@ FUNCTION( PREPROCESS_TARGET_SOURCE OUT_VAR TARGET TARGET_SOURCE )
             "${TARGET_SOURCE_ABS}"
         )
         IF( REL_PATH MATCHES [[^\.\./.*]] )
-            SET( "${OUT_VAR}" "${TARGET_SOURCE}" PARENT_SCOPE )
-            RETURN()
+            FILE( RELATIVE_PATH REL_PATH
+                "${PROJECT_BINARY_DIR}"
+                "${TARGET_SOURCE_ABS}"
+            )
+            IF( REL_PATH MATCHES [[^\.\./.*]] )
+                SET( "${OUT_VAR}" "${TARGET_SOURCE}" PARENT_SCOPE )
+                RETURN()
+            ENDIF()
         ENDIF()
         SET( TARGET_SOURCE "${REL_PATH}" )
     ELSE()
@@ -481,6 +487,12 @@ FUNCTION( PREPROCESS_TARGET_SOURCES TARGET )
                         "${PROJECT_SOURCE_DIR}"
                         "${EXTRACTED_DIR}"
                     )
+                    IF( REL_PATH MATCHES [[^\.\./.*]] )
+                        FILE( RELATIVE_PATH REL_PATH
+                            "${PROJECT_BINARY_DIR}"
+                            "${EXTRACTED_DIR}"
+                        )
+                    ENDIF()
                     IF( NOT REL_PATH MATCHES [[^\.\./.*]] )
                         LIST( APPEND NEW_TARGET_${PROPERTY}
                             "$<BUILD_INTERFACE:${TARGET_BINARY_DIR}/processed-sources/${REL_PATH}>"
