@@ -91,6 +91,8 @@ JadeMatrix-CMake-Modules/Util/AddDependency
 CMAKE_MINIMUM_REQUIRED( VERSION 3.5 FATAL_ERROR #[[
     Requiring 3.5+:
         CMAKE_PARSE_ARGUMENTS( ... )
+    Requiring 3.15+ (`STATUS` used below this version):
+        MESSAGE( VERBOSE ... )
 ]] )
 
 FUNCTION( ADD_DEPENDENCY NAME )
@@ -101,6 +103,12 @@ FUNCTION( ADD_DEPENDENCY NAME )
         ${ARGN}
     )
     
+    IF( CMAKE_VERSION VERSION_GREATER_EQUAL "3.15" )
+        SET( VERBOSE_LEVEL VERBOSE )
+    ELSE()
+        SET( VERBOSE_LEVEL STATUS )
+    ENDIF()
+    
     IF( DEFINED ADD_DEPENDENCY_NAMESPACE )
         SET( NAMESPACE "${ADD_DEPENDENCY_NAMESPACE}" )
     ELSE()
@@ -109,9 +117,19 @@ FUNCTION( ADD_DEPENDENCY NAME )
     
     SET( EXISTING_NONOPTIONAL_COMPONENTS )
     FOREACH( COMPONENT IN LISTS ADD_DEPENDENCY_COMPONENTS )
+        MESSAGE( ${VERBOSE_LEVEL}
+            "(ADD_DEPENDENCY) Checking if ${NAMESPACE}${COMPONENT} is a target…"
+        )
         IF( TARGET "${NAMESPACE}${COMPONENT}" )
+            MESSAGE( ${VERBOSE_LEVEL}
+                "(ADD_DEPENDENCY) … ${NAMESPACE}${COMPONENT} is a target"
+            )
             LIST( APPEND EXISTING_NONOPTIONAL_COMPONENTS
                 "${NAMESPACE}${COMPONENT}"
+            )
+        ELSE()
+            MESSAGE( ${VERBOSE_LEVEL}
+                "(ADD_DEPENDENCY) … ${NAMESPACE}${COMPONENT} is NOT a target"
             )
         ENDIF()
     ENDFOREACH()
@@ -141,6 +159,14 @@ FUNCTION( ADD_DEPENDENCY NAME )
                 RETURN()
             ENDIF()
         ENDFOREACH()
+    ENDIF()
+    
+    IF( ENC_LEN EQUAL ENC_EXPECTED_LEN )
+        MESSAGE( STATUS
+            "All dependencies (${ENC_EXPECTED_LEN}) satisfied for "
+            "ADD_DEPENDENCY()"
+        )
+        RETURN()
     ENDIF()
     
     IF(
